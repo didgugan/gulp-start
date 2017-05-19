@@ -15,7 +15,8 @@ const gulp         = require('gulp'),                       // Сам сборщ
       cache        = require('gulp-cache'),                 // Работа с кэшом
       autoprefixer = require('gulp-autoprefixer'),          // Пакет расстановки вендорных перфиксов
       importFile   = require('gulp-file-include'),          // Импорт файлов 
-      importCss    = require('gulp-import-css');            // Подключает файлы из библиотек в общий файл css на 
+      prettify     = require('gulp-html-prettify'),         // Красиво форматируем html файлы
+      importCss    = require('gulp-import-css');            // Подключает файлы из библиотек в общий файл CSS
 
 // Компилируем less в CSS и добавляем вендорные префиксы
 gulp.task('less',  () => {
@@ -120,7 +121,8 @@ gulp.task('build', ['clean', 'img', 'css', 'scripts', 'js-min'], () => {
     var buildJs = gulp.src('app/js/*.min.js')
     .pipe(gulp.dest('dist/js'));
 
-    // Собираем HTML
+    // Собираем и форматируем HTML
     var buildHtml = gulp.src('app/*.html')
+    .pipe(prettify({indent_char: ' ', indent_size: 2}))
     .pipe(gulp.dest('dist'));
 });
