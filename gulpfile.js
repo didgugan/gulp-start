@@ -16,6 +16,7 @@ const gulp         = require('gulp'),                       // Сам сборщ
       autoprefixer = require('gulp-autoprefixer'),          // Пакет расстановки вендорных перфиксов
       importFile   = require('gulp-file-include'),          // Импорт файлов 
       prettify     = require('gulp-html-prettify'),         // Красиво форматируем html файлы
+      uncss        = require('gulp-uncss'),                 // Находит и удаляет неиспользуемые стили CSS
       importCss    = require('gulp-import-css');            // Подключает файлы из библиотек в общий файл CSS
 
 // Компилируем less в CSS и добавляем вендорные префиксы
@@ -109,8 +110,26 @@ gulp.task('clear', () => {
 // Собираем наш билд в директорию 'dist/'
 gulp.task('build', ['clean', 'img', 'css', 'scripts', 'js-min'], () => {
 
+    // Собираем и форматируем HTML
+    var buildHtml = gulp.src('app/*.html')
+    .pipe(prettify({indent_char: ' ', indent_size: 2}))
+    .pipe(gulp.dest('dist'));
+
     // Собираем CSS
-    var buildCss = gulp.src('app/css/style.min.css')
+    //var buildCss = gulp.src('app/css/style.min.css')
+    //.pipe(gulp.dest('dist/css'));
+
+    // Собираем CSS
+    var buildCss = gulp.src('app/css/style.css')
+    .pipe(mmq())
+    .pipe(importCss())
+    .pipe(uncss({
+            html: ['app/*.html']
+        }))
+    .pipe(cssnano())
+    .pipe(rename({
+        suffix: '.min'
+    }))
     .pipe(gulp.dest('dist/css'));
 
     // Собираем шрифты
@@ -121,8 +140,5 @@ gulp.task('build', ['clean', 'img', 'css', 'scripts', 'js-min'], () => {
     var buildJs = gulp.src('app/js/*.min.js')
     .pipe(gulp.dest('dist/js'));
 
-    // Собираем и форматируем HTML
-    var buildHtml = gulp.src('app/*.html')
-    .pipe(prettify({indent_char: ' ', indent_size: 2}))
-    .pipe(gulp.dest('dist'));
+    
 });

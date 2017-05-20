@@ -25,6 +25,7 @@
     "gulp-merge-media-queries": "^0.2.1",
     "gulp-rename": "^1.2.2",
     "gulp-uglifyjs": "^0.6.2",
+    "gulp-uncss": "^1.0.6",
     "imagemin-gifsicle": "^5.1.0",
     "imagemin-jpegtran": "^5.0.2",
     "imagemin-optipng": "^5.1.1"
