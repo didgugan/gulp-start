@@ -122,10 +122,10 @@ gulp.task('build', ['clean', 'img', 'css', 'scripts', 'js-min'], () => {
     // Собираем CSS
     var buildCss = gulp.src('app/css/style.css')
     .pipe(mmq())
-    .pipe(importCss())
-    .pipe(uncss({
-            html: ['app/*.html']
-        }))
+    .pipe(importCss()). // расскоментируйте следующие строки для удаления неиспользуемых стилей css. будьте аккуратны, не всегда работает должным образом.
+    //.pipe(uncss({ 
+    //        html: ['app/*.html']
+    //    }))
     .pipe(cssnano())
     .pipe(rename({
         suffix: '.min'
